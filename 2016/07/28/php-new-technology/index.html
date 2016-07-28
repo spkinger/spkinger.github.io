@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      PHP的设计模式 | spkinger&#39;s blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="spkinger">
+    
+    
+
+    <meta name="description" content="PHP的设计模式、命名空间、自动载入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP的设计模式 | spkinger's blog">
+<meta property="og:url" content="http://spkinger.github.io/2016/07/28/php-new-technology/index.html">
+<meta property="og:site_name" content="spkinger's blog">
+<meta property="og:description" content="PHP的设计模式、命名空间、自动载入">
+<meta property="og:updated_time" content="2016-07-28T09:09:01.897Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP的设计模式 | spkinger's blog">
+<meta name="twitter:description" content="PHP的设计模式、命名空间、自动载入">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">spkinger&#39;s blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">PHP的设计模式</h1>
+
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>#1.Autoload</p>
+<p>####(1).php类的自动载入</p>
+<pre><code>#自动载入方法注册
+spl_autoload_register(&apos;autoload1&apos;);
+#自动载入方法
+function autoload1($class){
+    require __DIR__.&quot;/&quot;.$class.&quot;.php&quot;;
+}
+#然后就可以这样调用函数了
+Test1::test();
+Test2::test();
+</code></pre><p>####(2).PSR-0规范的框架</p>
+<pre><code>1.全部使用命名空间，文件名与类名一致且首字母大写
+2.所有PHP文件必须自动载入，不能使用include、requeire
+3.单一入口文件
+
+#例子
+index.php [在根目录]
+define(&apos;BASEDIR&apos;, __DIR__);
+include BASEDIR.&apos;/Lib/Loader.php
+spl_autoload_register(&apos;\\Lib\\Loader::autoload&apos;);
+Lib::Test::test();
+App\Controller\Home\Index::test();
+
+Loader.php [在Lib/Loader.php]
+class Loader{
+    static function autoload($class){
+        require BASEDIR.&apos;/&apos;.str_replace(&apos;\\&apos;, &apos;/&apos;, $class).&apos;.php&apos;;
+    }
+}
+</code></pre><p>#2.spl库（PHP标准库）</p>
+<p>####(1).栈（数据结构）–先进后出</p>
+<pre><code>$stack = new SplStack();
+$stack-&gt;push(&quot;data1&quot;);//进
+echo $stack-&gt;pop();//出
+</code></pre><p>####(2).队列（数据结构）–先进先出</p>
+<pre><code>$queue = new SplQueue();
+$queue-&gt;enqueue(&quot;data1&quot;);//进
+echo $queue-&gt;dequeue();//出
+</code></pre><p>####(3).堆</p>
+<pre><code>$heap = new SplMinHeap();//小顶堆
+$heap-&gt;insert(&quot;data1&quot;);//存入
+echo $heap-&gt;extract();//取出
+</code></pre><p>####(4).固定长度数组</p>
+<pre><code>$array = new AplFixedArray(10);
+$array[0] = 1;
+$array[9] = 10;
+var_dump($array);
+</code></pre><p>#3.链式操作的实现</p>
+<pre><code>$db-&gt;where()-&gt;order()-&gt;limit();
+
+实现方式是在db类的function的结尾处
+return $this;
+</code></pre><p>#4.PHP的魔术方法</p>
+<p>####(1).<strong>set </strong>get</p>
+<pre><code>#对不存在的对象属性访问进行控制
+function __set($key, $value){
+
+}
+function __get($key){
+
+}
+</code></pre><p>####(2).<strong>call </strong>callStatic</p>
+<pre><code>#对不存在的对象方法进行控制
+function __call($func, $param){
+
+}
+
+#对不存在的类的静态方法进行控制
+static function __callStatic($func, $param){
+
+}
+</code></pre><p>####(3). __toString</p>
+<pre><code>#需要对象转为字符串时会执行此方法
+class Obj{
+    function __toString(){
+        return __CLASS__;
+    }
+}
+$obj = new Obj();
+echo $obj;
+</code></pre><p>####(4). __invoke</p>
+<pre><code>#当对象被当做方法执行时会调用
+class Obj{
+    function __invoke($param){
+        var_dump($param)
+        return &quot;invoke&quot;;
+    }
+}
+$obj = new Obj();
+$obj(&quot;xxx&quot;);
+</code></pre><p>#5.设计模式</p>
+<p>####(1).工厂模式–辅助生成对象</p>
+<p>用处是可以统一控制对象的生成，方便预置参数等、方便类名修改</p>
+<pre><code>namespace Xxx;
+class Factory{
+    static function createDatabase(){
+        $db = new Database();
+        //中间可以加入一些预操作的代码
+        return $db;
+    }
+}
+
+$db = Xxx\Factory::createDatabase();
+</code></pre><p>####(2).单例模式–控制对象仅被创建一次</p>
+<pre><code>class Database{
+
+    static $db;
+
+    //用private可方式对象直接在外部被实例化
+    private function __construct(){
+
+    }
+
+    //用于实例化本类
+    static function getInstance(){
+        if(self::$db){
+            return self::$db;
+        }
+
+        self::$db = new self();
+        return self::$db;
+    }
+}
+</code></pre><p>####(3).注册表模式–全局共享和交换对象</p>
+<p>用处是声明一次对象后，以后直接通过get方法来存取</p>
+<pre><code>namespace Xxx;
+
+class Register{
+
+    protected static $objects;
+
+    static function set($alias, $object){
+        self::$objects[$alias] = $object;
+    }
+
+    static function get($alias){
+        if ( isset(self::$objects[$alias]) ) {  
+            return self::$objects[$alias];
+        }  
+        return null; 
+    }
+
+    static function _unset($alias){
+        unset(self::$objects[$alias]);
+    }
+}
+
+namespace Xxx;
+
+class Factory{
+    static function createDatabase(){
+        $db = Database::getInstance();
+        Register::set(&apos;db1&apos;, $db);
+        return $db;
+    }
+}
+
+#第一次调用
+$db = Xxx\Factory::createDatabase();
+#第二次调用
+$db = Xxx\Register::get(&apos;db1);
+</code></pre><p>####(4).适配器模式–将不同的函数封装成统一的API</p>
+<pre><code>#首先创建一个接口类，里面定义几个需要实现的方法；真正使用的类要继承自这个类并实现里面几个必须方法
+#如下接口
+interface IDatabase{
+    function connect($host, $user, $passwd, $dbname);
+    function query($sql);
+    function close();
+}
+#实现的类
+class MySQL implement IDatabase{
+
+    protected $conn;
+
+    function connetc($host, $user, $passwd, $dbname){
+        $conn = mysql_connect($host, $user, $passwd);
+        mysql_select_db($dbname, $connect);
+        $this-&gt;conn = $conn;
+    }
+
+    function query($sql){
+        return mysql_query($sql, $this-&gt;conn);
+    }
+
+    function close(){
+        mysql_close($this-&gt;conn);
+    }
+}
+</code></pre><p>####(5).策略模式</p>
+<pre><code>#通过传入接口不同的实现，使用统一的调用模式，得到不同的结果
+#方便实现的扩展，和功能的解耦，功能只需要在实现类里面实现修改即可
+
+#例子
+class Show{
+    /**
+     * @var \Xxx\UserStrategy
+     */
+     protected $strategy;
+
+     function index(){
+         $this-&gt;stragegy-&gt;showAd();
+     }
+
+     function setStrategy(\Xxx\UserStrategy $strategy){
+         $this-&gt;strategy = $stragegy;
+     }
+ }
+ interface UserStrategy{
+     function showAd();
+ }
+ class FemaleUserStragegy implements UserStrategy{
+     function showAd(){}
+ }
+
+ $show = new Show();
+ $show-&gt;setStrategy(new FemaleUserStragegy());
+ $show-&gt;index();
+</code></pre>
+  </section>
+
+  
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

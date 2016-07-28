@@ -7,7 +7,7 @@
     
 
     <title>
-      Hello World | spkinger&#39;s blog 
+      git忽略未提交文件和忽略已提交文件 | spkinger&#39;s blog 
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -16,19 +16,16 @@
     
     
 
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+    <meta name="description" content="git忽略文件的两种方法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World | spkinger's blog">
-<meta property="og:url" content="http://spkinger.github.io/2016/07/28/hello-world/index.html">
+<meta property="og:title" content="git忽略未提交文件和忽略已提交文件 | spkinger's blog">
+<meta property="og:url" content="http://spkinger.github.io/2016/07/28/git-ignore/index.html">
 <meta property="og:site_name" content="spkinger's blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-07-28T02:07:43.538Z">
+<meta property="og:description" content="git忽略文件的两种方法">
+<meta property="og:updated_time" content="2016-07-28T09:09:33.158Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World | spkinger's blog">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="git忽略未提交文件和忽略已提交文件 | spkinger's blog">
+<meta name="twitter:description" content="git忽略文件的两种方法">
     
     
     
@@ -152,37 +149,35 @@ classes that you can use:
 
   <header class="post-header">
     
-    <h1 class="post-title">Hello World</h1>
+    <h1 class="post-title">git忽略未提交文件和忽略已提交文件</h1>
 
-    
-
-    <div class="post-meta">
-      <time datetime="2016-07-28" class="post-meta__date date">2016-07-28</time> 
-
-      <span class="post-meta__tags tags">
-
-          
-
-          
-
-      </span>
-    </div>
-    
     
 
   </header>
 
   <section id="post-content" class="article-content post">
-    <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
+    <p>##1.忽略未提交文件（Unstracked的文件）</p>
+<pre><code>#在需要的目录下建立.gitignore文件
+vim .gitignore
+#里面添加要忽略的文件路径,如下
+xx/*
+*.cc
+#文件路径
+web
+ |--.gitignore
+ |--xx/
+ |--yy.cc
+ |--zz.cc
+</code></pre><p>##2.忽略已提交的文件</p>
+<pre><code>#忽略单个文件
+git update-index --assume-unchanged yy.cc
+#忽略文件夹（末尾不要加*）
+git update-index --assume-unchanged xx/
+#解除忽略
+git update-index --no-assume-unchanged xx/
+#查看忽略的文件
+git  ls-files -v
+</code></pre>
   </section>
 
   

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Hello Word By Symfony | spkinger&#39;s blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="spkinger">
+    
+    
+
+    <meta name="description" content="Hello Word By Symfony">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hello Word By Symfony | spkinger's blog">
+<meta property="og:url" content="http://spkinger.github.io/2016/07/28/symfony-hello-word/index.html">
+<meta property="og:site_name" content="spkinger's blog">
+<meta property="og:description" content="Hello Word By Symfony">
+<meta property="og:updated_time" content="2016-07-28T09:06:34.374Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hello Word By Symfony | spkinger's blog">
+<meta name="twitter:description" content="Hello Word By Symfony">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">spkinger&#39;s blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Hello Word By Symfony</h1>
+
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>##1.Hello Word</p>
+<p>####(0).symony的安装</p>
+<pre><code>首先要保证php-cli可用，没有请自行安装（symfony要求php在5.0版本以上
+#安装composer包依赖管理工具，然后就可以使用composer这个命令了
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+#安装symfony
+#我安装的是2.6版本，然后安装到当前目录的symfony下
+composer create-project symfony/framework-standard-edition ./symfony
+</code></pre><p>####(00).symfony新的安装方式</p>
+<pre><code>#linux和mac os
+sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony
+sudo chmod a+x /usr/local/bin/symfony
+#windows
+php -r &quot;readfile(&apos;http://symfony.com/installer&apos;);&quot; &gt; symfony
+
+#然后执行如下即可（需要翻山越岭。。）
+symfony new my_project
+
+#将域名指向网站后可能出现报错，提示需要更改logs和cache文件夹的权限，直接更改所有者为apache(推荐线上)，本地权限改为777
+sudo chmod -R 777 app/logs
+sudo chmod -R 777 app/cache
+</code></pre><p>####(1).php-cli运行网站</p>
+<pre><code>#在网站根目录下执行，-vvv代表将请求信息都打印出来（此处根目录是symfony里面）
+php app/console server:run -vvv
+</code></pre><p>####(2).创建一个新Bundle</p>
+<pre><code>app/console generate:bundle
+然后输入Scourgen/SppBundle，得到的是在src目录下创建一个Scourgen目录，再在其下创建一个SppBundle目录防止项目
+#生成bundle后需要清理一下缓存
+php app/console cache:clear --env=prod
+php app/console cache:clear --env=dev
+#测试
+编辑Controller下的DefaultController；hello改成hh
+php app/console server:run -vvv启动服务
+访问http://127.0.0.1:8000/app_dev.php/hh/abc
+或者http://127.0.0.1:8000/hh/abc
+</code></pre><p>####(3).如果建立bundle时选择的是annoation后期转yml方法</p>
+<pre><code>#entity
+php app/console doctrine:mapping:convert --namespace=&quot;xxxBundle\Entity\Blog&quot; 
+</code></pre><p>yml src/xxxBundle/Resources/config/doctrine</p>
+<pre><code>#router
+app/console router:convert yml destination-dir/
+
+#如下命令可查看现有的路由
+app/console router:debug
+app/console router:dump-apache（任选一个）
+</code></pre><p>#2.实际项目流程</p>
+<p>####(1).从头创建一个新项目（参考上面）</p>
+<pre><code>sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony
+sudo chmod a+x /usr/local/bin/symfony
+
+symfony new my_project
+
+sudo chmod -R 777 app/logs
+sudo chmod -R 777 app/cache
+
+app/console generate:bundle --namespace=Xxx/XxxBundle --format=yml
+
+php app/console cache:clear --env=prod
+php app/console cache:clear --env=dev
+
+#然后设置Apache、nginx的域名指向到（项目根目录/web）下
+然后使用如下测试访问
+http://域名/hello/jobeet or http://域名/app_dev.php/hello/jobeet
+</code></pre><p>####(2).数据库的生成</p>
+<p><a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html" target="_blank" rel="external">Doctrine2表对应关系设置文档</a></p>
+<pre><code>#编辑app/config/parameters.yml(数据库配置)
+#如果没有预先创建数据库，执行如下创建
+app/console doctrine:database:create
+
+#添加数据库结构文件
+创建目录src/xxxBundle/Resources/config/doctrine
+在下面创建如Category.orm.yml的文件
+
+#生成entity文件(model文件)
+app/console doctrine:generate:entities XxxXxxBundle
+
+#生成数据库的表
+app/console doctrine:schema:update --force
+</code></pre><p>####(3).生成测试数据<br><a href="http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html" target="_blank" rel="external">DoctrineFixturesBundle文档</a></p>
+<pre><code>#安装DoctrineFixturesBundle
+
+1.编辑composer.json
+{
+    &quot;require&quot;: {
+        &quot;doctrine/doctrine-fixtures-bundle&quot;: &quot;2.2.*&quot;
+    }
+}
+
+composer update
+
+编辑app/AppKernel.php，在测试环境注册这个bundle，添加如下语句
+$bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+
+2.创建文件夹src/Xxx/XxxBundle/DataFixtures/ORM
+例：mkdir -p src/Spk/WebBundle/DataFixtures/ORM
+在此文件夹下添加LoadCategoryData.php等数据生成文件(具体格式参照文档)
+执行命令生成数据
+app/console doctrine:fixtures:load
+</code></pre><p>####(4).生成具备CRUD功能的控制器和表单</p>
+<pre><code>解释是使用entity SpkWebBundle:Job，路由前缀是spk_job，添加“write”方法（包括new, update, and delete方法），格式使用yml
+app/console doctrine:generate:crud --entity=SpkWebBundle:Job --route-prefix=spk_job --with-write --format=yml
+
+然后可访问如下这些等等
+#需要修改下src/Xxx/XxxBundle/Resources/config/routing.yml里面的spk_job为job
+http://yymm.com/app_dev.php/job
+http://yymm.com/app_dev.php/job/new
+http://yymm.com/app_dev.php/job/1/show
+</code></pre>
+  </section>
+
+  
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>

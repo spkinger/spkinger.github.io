@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Symfony 笔记2--数据库操作 | spkinger&#39;s blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="spkinger">
+    
+    
+
+    <meta name="description" content="Symfony使用的数据库框架Doctrine">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Symfony 笔记2--数据库操作 | spkinger's blog">
+<meta property="og:url" content="http://spkinger.github.io/2016/07/28/symfony-database/index.html">
+<meta property="og:site_name" content="spkinger's blog">
+<meta property="og:description" content="Symfony使用的数据库框架Doctrine">
+<meta property="og:updated_time" content="2016-07-28T09:08:38.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Symfony 笔记2--数据库操作 | spkinger's blog">
+<meta name="twitter:description" content="Symfony使用的数据库框架Doctrine">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">spkinger&#39;s blog</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Symfony 笔记2--数据库操作</h1>
+
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>#8.数据库设置</p>
+<p>####(1).生成set、get方法和repository</p>
+<pre><code>#需要先在src/Spkinger/WebBundle/Entity下建立User.php文件
+#内容如下
+&lt;?php
+
+namespace Spkinger\WebBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=&quot;UserRepository&quot;)
+ * @ORM\Table(name=&quot;user&quot;)
+ */
+class user{
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type=&quot;integer&quot;)
+     * @ORM\GeneratedValue(strategy=&quot;AUTO&quot;)
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type=&quot;string&quot;)
+     */
+    protected $username;
+
+    /**
+     * @ORM\Column(type=&quot;string&quot;)
+     */
+    protected $password;
+}
+#生成(更新)命令
+app/console generate:doctrine:entities SpkingerWebBundle
+</code></pre><p>####(2).数据库连接配置</p>
+<pre><code>#数据库配置文件
+编辑app/config/parameters.yml
+</code></pre><p>####(3).库和表的建立</p>
+<pre><code>#创建数据库(会创建上面配置文件中的数据库)
+app/console doctrine:database:create
+
+#在数据库中建表并更新表结构
+app/console doctrine:schema:update (这条不会有实际操作)
+app/console doctrine:schema:update --force (强制执行更新表结构)
+app/console doctrine:schema:update --dump-sql (仅打印要操作的sql)
+</code></pre><p>####(4).表之间一对一的关系建立</p>
+<pre><code>#编辑两个表对应的src/Spkinger/WebBundle/Entity下的php文件
+
+#引入两个文件
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
+
+#分别添加关联对方的类属性
+#如下
+#这里，
+targetEntity=&quot;user&quot;是指关联user；
+inversedBy=&quot;profile&quot;指双向关联到profile自己这里（不写就是单向关联）；
+JoinColumn(name=&quot;user_id&quot;,referencedColumnName=&quot;id&quot;)是指在本表建立一个user_id字段，并关联到对方表的id字段
+class profile{
+
+    ...
+
+    /**
+     * @OneToOne(targetEntity=&quot;user&quot;,inversedBy=&quot;profile&quot;)
+     * @JoinColumn(name=&quot;user_id&quot;,referencedColumnName=&quot;id&quot;)
+     */
+    private $user;
+}
+
+class user{
+
+    ...
+
+    /**
+     * OneToOne(targetEntity=&quot;profile&quot;,mappedBy=&quot;user&quot;)
+     */
+     private $profile;
+}
+
+#先执行如下代码，更新Entity下的php控制文件
+app/console generate:doctrine:entities SpkingerWebBundle
+
+#再执行
+app/console doctrine:schema:update --force (强制执行更新表结构)
+</code></pre><p>#9.数据库操作</p>
+<p>####(1).简单的插入</p>
+<pre><code>$user = new User();
+$user-&gt;setAge(19);
+$user-&gt;setEmail(&quot;xxx@xx.com&quot;);
+$user-&gt;setPassword(&apos;xxx&apos;);
+
+$em = $this-&gt;getDoctrine()-&gt;getManager();
+$em-&gt;persist($user);
+$em-&gt;flush();
+</code></pre><p>####(2).关联的数据插入</p>
+<pre><code>use Spkinger\WebBundle\Entity\UserRepository;
+use Spkinger\WebBundle\Entity\Book;
+
+$em = $this-&gt;getDoctrine()-&gt;getManager();
+$user = $em-&gt;getRepository(&quot;SpkingerWebBundle:User&quot;)-findOneBy(array(&apos;id&apos;=&gt;1));
+
+$book1 = new Book();
+$book1-&gt;setTitle(&quot;book1&quot;)-&gt;setPrice(10)-&gt;addUser($user);
+</code></pre><p>####(3).关联数据的查询</p>
+<pre><code>/** @var $user \Spkinger\WebBundle\Entity\User */
+$user = $em-&gt;getRepository(&quot;SpkingerWebBundle:User&quot;)-findOneBy(array(&apos;id&apos;=&gt;1));
+
+foreach($user-&gt;getBooks() as $book){
+    echo $book-&gt;getTitle();
+}
+</code></pre><p>####(4).更新数据库</p>
+<pre><code>$em = $this-&gt;getDoctrine()-&gt;getManager();
+$user = $em-&gt;getRepository(&quot;SpkingerWebBundle:User&quot;)-findOneBy(array(&apos;id&apos;=&gt;1));
+$user-&gt;setAge(20);
+$em-&gt;persist($user);
+$em-&gt;flush();
+</code></pre><p>####(5).删除数据</p>
+<pre><code>$em = $this-&gt;getDoctrine()-&gt;getManager();
+$user = $em-&gt;getRepository(&quot;SpkingerWebBundle:User&quot;)-findOneBy(array(&apos;id&apos;=&gt;1));
+$em-&gt;remove($user);
+$em-&gt;flush();
+</code></pre><p>####(6).数据查询1–直接获取单条数据、根据id绑定数据库</p>
+<pre><code>/**
+ * @Route(&quot;/book/show/{id}&quot;)
+ * @ParamConverter(&quot;book&quot;, class=&quot;SpkingerWebBundle:Book&quot;)
+ */
+public function showBookAction(Book $book){
+    return new Response($book-&gt;getTitle());
+}
+</code></pre><p>####(7).数据查询2-find的使用</p>
+<pre><code>/** @var $books \Spkinger\WebBundle\Entity\Book */
+$books = $em-&gt;getRepository(&quot;SpkingerWebBundle:Book&quot;)
+    -&gt;findBy(
+            array(&quot;title&quot;=&gt;&quot;book1&quot;),
+            array(&quot;price&quot;=&gt;&quot;DESC&quot;)
+    );
+#或者
+$books = $em-&gt;getRepository(&quot;SpkingerWebBundle:Book&quot;)
+    -&gt;findByTitle(&quot;book1&quot;);
+
+echo $books[0]-&gt;getTitle();
+</code></pre><p>####(8).使用自定义方法查询</p>
+<pre><code>表对应的repository文件中添加
+public function getAllValidByTitle($title){
+    return $this-&gt;findBy(array(&quot;title&quot;=&gt;$title));
+}
+
+控制器里面可以这样调用
+$books = $em-&gt;getRepository(&quot;SpkingerWebBundle:Book&quot;)
+    -&gt;getAllValidByTitle(&quot;book1&quot;);
+</code></pre><p>####(9).自动更新创建和编辑时间</p>
+<pre><code>#表对应的entry类外注释增加 @ORM\HasLifecycleCallbacks();
+如下
+/**
+  * @ORM\Entity(repositoryClass=&quot;BookRepository&quot;)
+  * @ORM\Table(name=&quot;book&quot;)
+  * @ORM\HasLifecycleCallbacks();
+  */
+
+  #添加字段
+  /**
+  * @ORM\Column(type=&quot;datetime&quot;)
+  */
+ protected $createAt;
+
+ /**
+  * @ORM\Column(type=&quot;datetime&quot;)
+  */
+ protected $updateAt;
+
+ #增加方法，在persist（创建）之前执行，在update（更新）之前执行
+ /**
+  * @ORM\PrePersist()
+  */
+ public function PrePersist(){
+     if($this-&gt;getCreateAt() == null){
+         $this-&gt;setCreateAt(new \DateTime(&apos;now&apos;));
+     }
+
+     $this-&gt;setUpdateAt(new \DateTime(&apos;now&apos;));
+ }
+ /**
+  * @ORM\PreUpdate()
+  */
+ public function PreUpdate(){
+     $this-&gt;setUpdateAt(new \DateTime(&apos;now&apos;));
+ }
+
+ #注意更新表结构和set、个头方法
+ app/console doctrine:schema:update --force
+ app/console generate:doctrine:entities SpkingerWebBundle
+</code></pre><p>####(10).直接执行sql语句</p>
+<pre><code>注意这里返回的是mysql原生的结果集(数组)
+$this-&gt;get(&apos;database_connection&apos;)-&gt;fetchAll(&quot;SELECT * FROM book WHERE book.id = 1&quot;);
+</code></pre><p>####(11).手动控制事务</p>
+<pre><code>(1)使用try{}catch{}
+$em-&gt;getConnection()-&gt;beginTransaction();
+try{
+    $book2 = $em-&gt;getRepository(&quot;SpkingerWebBundle:Book&quot;)
+            -&gt;findOneBy(array(&quot;title&quot;=&gt;&quot;book1&quot;));
+    $book2-&gt;setPrice(11);
+    $em-&gt;persist($book2);
+    $em-&gt;getConnection()-&gt;commit();
+}catch(Exception $e){
+    $em-&gt;getConnection()-&gt;rollback();
+}
+
+(2)使用框架自身方法
+$em-&gt;transactional(function($em){
+    $book2 = $em-&gt;getRepository(&quot;SpkingerWebBundle:Book&quot;)
+        -&gt;findOneBy(array(&quot;title&quot;=&gt;&quot;book1&quot;));
+    $book2-&gt;setPrice(11);
+    $em-&gt;persist($book2);
+});
+</code></pre><p>####(12).执行sql返回（symfony可用的）对象</p>
+<pre><code>#注意：这样搜索结果不全时，使用对象调用不存在的set、get会报错
+$sql = &quot;SELECT
+        partial b.{id,title}
+        partial u.{id,email}
+        FROM SpkingerWebBundle:Book b join b.users u&quot;
+</code></pre><p>####(13).打印sql结果</p>
+<pre><code>$query = $this-&gt;getDoctrine()
+        -&gt;getManager()
+        -&gt;createQuery(&quot;SELECT u FROM SpkingerWebBundle:User u&quot;);
+Debug::dump($query-&gt;getResult());
+exit();
+</code></pre>
+  </section>
+
+  
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
